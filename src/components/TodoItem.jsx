@@ -18,9 +18,7 @@ const TodoItem = ({ id, title, completed, onToggleTodo, onDeleteTodo }) => {
       <CloseButton
         onClick={() =>
           onDeleteTodo({
-            variables: {
-              id: id,
-            },
+            variables: { id },
           })
         }
       />

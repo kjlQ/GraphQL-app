@@ -6,21 +6,21 @@ import { ADD_TODO, ALL_TODOS } from "../apollo/todos";
 const AddTodo = () => {
   const [text, setText] = useState("");
   const [addTodo, { error }] = useMutation(ADD_TODO, {
-    // refetchQueries:[{
-    //   query:ALL_TODOS
-    // }]
+    // refetchQueries: [
+    //   { query: ALL_TODOS }
+    // ],
     update(cache, { data: { newTodo } }) {
       const { todos } = cache.readQuery({ query: ALL_TODOS });
+
       cache.writeQuery({
         query: ALL_TODOS,
         data: {
-          todos: [...todos, newTodo],
+          todos: [newTodo, ...todos],
         },
       });
     },
   });
-
-  if (error) return <h2>error...</h2>;
+  console.log(error);
 
   const handleAddTodo = () => {
     if (text.trim().length) {
@@ -28,7 +28,7 @@ const AddTodo = () => {
         variables: {
           title: text,
           completed: false,
-          userId: 12233,
+          userId: 123,
         },
       });
       setText("");
@@ -38,6 +38,10 @@ const AddTodo = () => {
   const handleKey = (event) => {
     if (event.key === "Enter") handleAddTodo();
   };
+
+  if (error) {
+    return <h2>Error...</h2>;
+  }
 
   return (
     <FormControl display={"flex"} mt={6}>
